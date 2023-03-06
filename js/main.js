@@ -2,8 +2,7 @@ const bottonePlay = document.querySelector('.btn');
 const punteggio = document.querySelector('#score');
 const messaggio = document.querySelector('#message');
 
-
-
+let score = 0;
 let square; 
 let arrayBombe = [];
 let arrayNumeri = [];
@@ -18,10 +17,8 @@ bottonePlay.addEventListener('click',
             messaggio.innerHTML = '';
             punteggio.classList.remove('d-none');
             punteggio.innerHTML = '';
-            let score = 0;
 
             arrayBombe = creaListaBombe(difficoltaValue);
-            
 
             for (let i = 1; i <= difficoltaValue; i++){            //ogni ciclo creo un quadratino da 1 a .. 
                 square = newSquare();                              //con misure stabilite e classe active o explosive e numeretto
@@ -33,43 +30,45 @@ bottonePlay.addEventListener('click',
                     square.classList.add('medio');
                 }else if (difficoltaValue == '49'){
                     square.classList.add('difficile');
-                }
-
+                }               
                 
+                let gameOver = false;
                 
                 square.addEventListener('click', 
                     function(){
                         this.innerHTML = i;
-                        console.log(i);
+                        if(gameOver == false){
+                            console.log('secondo' + gameOver);
 
-                        
-                        if(arrayBombe.includes(i)){
-                            this.classList.remove('active');
-                            this.classList.add('explosive'); 
-                            punteggio.classList.add('d-none');
-                            messaggio.innerHTML = 'HAI PERSO!! Riprova.';
-                            //this.removeEventListener();
-                        } else {
-                            this.classList.add('active');
-                            arrayNumeriscelti.push(i);
-                            score++;
+                            if(arrayBombe.includes(i)){
+                                this.classList.remove('active');
+                                this.classList.add('explosive'); 
+                                punteggio.classList.add('d-none');
+                                messaggio.innerHTML = 'HAI PERSO!! Riprova.';
+                                gameOver = true;
+                                console.log('terzo' + gameOver);
+
+                            } else {
+                                this.classList.add('active');
+                                arrayNumeriscelti.push(i);
+                                score++;
+                                gameOver = false;
+                            }
+                            if ((arrayNumeri.length - arrayBombe.length) == score){
+                                messaggio.innerHTML = 'HAI VINTO';
+                                punteggio.innerHTML = '';
+                                score = 0;
+                            }
+                            punteggio.innerHTML = `Il tuo punteggio è ${score}`;
                         }
-
-                        
-                        punteggio.innerHTML = `Il tuo punteggio è ${score}`;
                     }
+                        
                 )
 
-                if ((difficoltaValue - arrayNumeriscelti.length) == arrayBombe.length){
-                    messaggio.innerHTML = 'HAI VINTO';
-                }
+                
 
-                gridDom.append(square);             
-            }
-
-            
-            
-           
+                gridDom.append(square);         
+            }          
     }       
 )
 
@@ -83,7 +82,6 @@ function newSquare() {
 function creaListaBombe (max){
     let listaBombe = [];
     let bomba;
-    let element = true;
     for ( let i = 0; i < 16 ; i++){
         bomba = Math.floor(Math.random() * (max - 1)) + 1;
 
