@@ -1,13 +1,13 @@
 const bottonePlay = document.querySelector('.btn');
 const punteggio = document.querySelector('#score');
-const messaggioPerso = document.querySelector('#you-lose');
+const messaggio = document.querySelector('#message');
 
 
 
 let square; 
 let arrayBombe = [];
 let arrayNumeri = [];
-let arrayNumeriNoBombe = [];
+let arrayNumeriscelti = [];
 
 bottonePlay.addEventListener('click', 
     function (){
@@ -15,7 +15,7 @@ bottonePlay.addEventListener('click',
             const difficoltaValue = difficoltaDom.value;
             const gridDom = document.getElementById('grid');
             gridDom.innerHTML = '';
-            messaggioPerso.innerHTML = '';
+            messaggio.innerHTML = '';
             punteggio.classList.remove('d-none');
             punteggio.innerHTML = '';
             let score = 0;
@@ -47,17 +47,22 @@ bottonePlay.addEventListener('click',
                             this.classList.remove('active');
                             this.classList.add('explosive'); 
                             punteggio.classList.add('d-none');
-                            messaggioPerso.innerHTML = 'HAI PERSO!! Riprova.';
+                            messaggio.innerHTML = 'HAI PERSO!! Riprova.';
                             //this.removeEventListener();
                         } else {
                             this.classList.add('active');
+                            arrayNumeriscelti.push(i);
                             score++;
                         }
 
-                        console.log(arrayNumeriNoBombe);
+                        
                         punteggio.innerHTML = `Il tuo punteggio è ${score}`;
                     }
                 )
+
+                if ((difficoltaValue - arrayNumeriscelti.length) == arrayBombe.length){
+                    messaggio.innerHTML = 'HAI VINTO';
+                }
 
                 gridDom.append(square);             
             }
@@ -83,10 +88,8 @@ function creaListaBombe (max){
         bomba = Math.floor(Math.random() * (max - 1)) + 1;
 
         if(listaBombe.includes(bomba)){
-            element = false;
-        }
-
-        if(element = true){
+            i--
+        }else{
             listaBombe.push(bomba);
         }
     } 
