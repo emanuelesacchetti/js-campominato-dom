@@ -33,11 +33,9 @@ bottonePlay.addEventListener('click',
                 }               
                 
                 let gameOver = false;
-                
-                square.addEventListener('click',                //l'elemento gameOver di base è false e quando entra 
-                    function(){                                 //nell'if può farlo ma se incontra una bomba diventa 
-                                                                //true e allora nel tornare nell'if dovrebbe trovare bloccato ed uscire
-                        if(gameOver == false){                  //ma in realtà non funziona
+                if(gameOver == false){
+                    square.addEventListener('click',                
+                    function(){                                              
                             console.log('secondo' + gameOver);
                             this.innerHTML = i;  
                             if(arrayBombe.includes(i)){
@@ -60,10 +58,12 @@ bottonePlay.addEventListener('click',
                                 score = 0;
                             }
                             punteggio.innerHTML = `Il tuo punteggio è ${score}`;
-                        }
+                        
                     }
                         
                 )
+                }
+                
 
                 
 
